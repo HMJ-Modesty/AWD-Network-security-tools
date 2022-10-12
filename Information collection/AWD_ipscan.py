@@ -29,7 +29,7 @@ for url in iplist:
     try:
 # 发送请求
         response = requests.post(url,headers = headers,timeout=1)
-# response = requests.post(url)
+        # response = requests.get(url,headers = headers,timeout=1)
         code = response.status_code
         if  code == 200:
             print(url)

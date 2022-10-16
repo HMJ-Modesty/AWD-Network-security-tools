@@ -12,7 +12,7 @@ headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/
 file = open('iplist.txt', "w")
 for i in range(255):
     #ip = "https://192-168-1-" + str(i) +".awd.bugku.cn"
-    ip = "http://39.156.66." + str(i)
+    ip = "http://192.156.66." + str(i)
     file.write('{}\n'.format(ip))
 file.close()
 

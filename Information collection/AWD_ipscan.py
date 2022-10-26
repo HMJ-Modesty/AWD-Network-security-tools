@@ -5,14 +5,18 @@
 # -----------------------------------------------------------------------------------
 
 # 导入 requests 包
+from matplotlib.pyplot import switch_backend
 import requests
+import threading
 
-headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36"}
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36"}
 # 写入ip
 file = open('iplist.txt', "w")
-for i in range(255):
-    #ip = "https://192-168-1-" + str(i) +".awd.bugku.cn"
-    ip = "http://192.156.66." + str(i)
+for i in range(256):
+    # ip = "https://192-168-1-" + str(i) +".awd.bugku.cn"
+    ip = "http://192-168-1-" + str(i) +".pvp1522.bugku.cn"
+    # ip = "http://39.156.66." + str(i)
     file.write('{}\n'.format(ip))
 file.close()
 
@@ -24,18 +28,37 @@ for f in file:
     iplist.append(ip_list)
 file.close()
 
-file = open('ip_result_of_scanning.txt', "w")
-for url in iplist:
-    try:
-# 发送请求
-        response = requests.post(url,headers = headers,timeout=1)
-        # response = requests.get(url,headers = headers,timeout=1)
-        code = response.status_code
-        if  code == 200:
-            print(url)
-            file.write('{}\n'.format(url))
-        else:
+
+def scan(x, y):
+    s = requests.Session()
+    file = open('ip_result_of_scanning.txt', "a+")
+    for i in range(x, y):
+        try:
+            # 发送请求
+            print("正在扫描目标请耐心等待.... ...." + iplist[i])
+            response = s.get(iplist[i], headers=headers, timeout=1)
+            # response = requests.get(iplist[i],headers = headers,timeout=1)
+            code = response.status_code
+            if code == 200:
+                print(iplist[i])
+                file.write('{}\n'.format(iplist[i]))
+            else:
+                pass
+        except requests.exceptions.RequestException as e:
             pass
-    except requests.exceptions.RequestException as e:
-        pass
-file.close()
+    file.close()
+
+
+def Threads(amount, total):
+    for i in range(amount):
+        y = (total / amount)
+        x = i * (total / amount)
+        thread = threading.Thread(name='i', target=scan, args=(int(x), int(x + y)))
+        thread.start()  # 启动线程
+
+
+Threads(256, 256)
+
+
+
+

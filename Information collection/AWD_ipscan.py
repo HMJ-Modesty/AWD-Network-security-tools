@@ -15,8 +15,8 @@ headers = {
 file = open('iplist.txt', "w")
 for i in range(256):
     # ip = "https://192-168-1-" + str(i) +".awd.bugku.cn"
-    ip = "http://192-168-1-" + str(i) +".pvp1522.bugku.cn"
-    # ip = "http://39.156.66." + str(i)
+    # ip = "http://192-168-1-" + str(i) +".pvp1522.bugku.cn"
+    ip = "http://192.168.11." + str(i)+ ":8080"
     file.write('{}\n'.format(ip))
 file.close()
 

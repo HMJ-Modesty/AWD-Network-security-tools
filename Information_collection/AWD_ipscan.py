@@ -12,17 +12,17 @@ import threading
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36"}
 # 写入ip
-file = open('iplist.txt', "w")
+file = open('../Information_collection/iplist.txt', "w")
 for i in range(256):
-    # ip = "https://192-168-1-" + str(i) +".awd.bugku.cn"
+    ip = "http://192-168-1-" + str(i) + ".awd.bugku.cn"
     # ip = "http://192-168-1-" + str(i) +".pvp1522.bugku.cn"
-    ip = "http://192.168.11." + str(i)+ ":8080"
+    # ip = "http://192.168.56." + str(i)+"/awd"
     file.write('{}\n'.format(ip))
 file.close()
 
 # 读取ip
 iplist = []
-file = open("iplist.txt", "r")
+file = open("../Information_collection/iplist.txt", "r")
 for f in file:
     ip_list = f.strip()
     iplist.append(ip_list)
@@ -31,7 +31,7 @@ file.close()
 
 def scan(x, y):
     s = requests.Session()
-    file = open('ip_result_of_scanning.txt', "a+")
+    file = open('../Information_collection/ip_result_of_scanning.txt', "a+")
     for i in range(x, y):
         try:
             # 发送请求
@@ -57,8 +57,6 @@ def Threads(amount, total):
         thread.start()  # 启动线程
 
 
-Threads(256, 256)
-
-
-
-
+if __name__ == "__main__":
+    print("开始扫描")
+    Threads(256, 256)

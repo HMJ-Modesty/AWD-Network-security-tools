@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>登录 - Bugku CTF</title>
+    <meta name="keywords" content="CTF,CTF教程,CTF平台,网络安全,夺旗比赛,awd攻防赛,awd赛教程,攻防演练">
+    <meta name="description" content="国内最活跃的CTF平台，每日更新题目。">
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/static/home/css/bundle.css" type="text/css">
+    <link rel="stylesheet" href="/static/home/css/app.css?v=1.2" type="text/css">
+    <link rel="stylesheet" href="/static/home/css/aman.css?v1.4" type="text/css">
+</head>
+<body class="form-membership">
+<div class="form-wrapper qrcode" style="position: relative;overflow: hidden">
+    <div class="login-tab login-tab-pass"><i class="fa fa-desktop"></i></div>
+    <div class="login-tab login-tab-qrcode"><i class="fa fa-qrcode"></i></div>
+    <!-- logo -->
+    <div id="logo">
+        <img style="width: 100px;" class="logo" src="/static/images/logo.png?v=1" alt="image">
+    </div>
+    <form id="form" class="needs-validation" novalidate>
+        <div class="form-group">
+            <input type="text" name="username" placeholder="账号或邮箱或手机" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <input type="password" name="password" class="form-control" placeholder="密码"
+                   required="">
+        </div>
+        <div class="form-row">
+            <div class="form-group col-8 mb-0">
+                <input type="text" name="vcode"  class="form-control" placeholder="验证码" required>
+            </div>
+            <div class="form-group col-4 mb-0">
+                <img id="vcode" style="width: 100%;" src="/captcha.html" onclick="this.src='/captcha.html'+Math.random()">
+            </div>
+
+        </div>
+        <div class="form-group d-flex justify-content-between">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" value="1" name="autologin" class="custom-control-input" checked="" id="autoLogin">
+                <label class="custom-control-label" for="autoLogin">自动登录</label>
+            </div>
+            <span>
+                <a  href="/reg.html">注册</a>
+                <span>|</span>
+                <a href="/reset.html">忘记密码？</a>
+            </span>
+        </div>
+        <button id="login" class="btn btn-primary btn-block">登录</button>
+        <hr>
+        <p class="text-muted">第三方登录</p>
+        <ul class="list-inline">
+            <li class="list-inline-item">
+                <a href="https://open.weixin.qq.com/connect/qrconnect?appid=wxc80ad302e6ecc596&amp;redirect_uri=https://ctf.bugku.com/login/wxBack&amp;response_type=code&amp;scope=snsapi_login&amp;state=26f6386898c4b9ba79b9d9eefdd72eb6#wechat_redirect" class="btn btn-floating btn-whatsapp">
+                    <i class="fa fa-wechat"></i>
+                </a>
+            </li>
+            <li class="list-inline-item">
+                <a href="https://github.com/login/oauth/authorize?client_id=abb8d3b6860af52547b1&amp;redirect_uri=https://ctf.bugku.com/back/github?type=login&amp;state=26f6386898c4b9ba79b9d9eefdd72eb6&amp;allow_signup=0"  class="btn btn-floating btn-github">
+                    <i class="fa fa-github"></i>
+                </a>
+            </li>
+        </ul>
+        <div class="login-box-wx">
+            <div id="wxQrcode" ></div>
+            <div>
+                <a href="javascript:;" id="userPass">密码登录</a>
+                <span> | </span>
+                <a href="/reg.html">立即注册</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script src="/static/home/js/bundle.js?v=1.3"></script>
+<script src="/static/home/js/app.js?v=1.3"></script>
+<script src="/static/home/js/jquery.cookie.min.js"></script>
+<script src="/static/home/js/toast.js"></script>
+<script src="/static/home/js/aman.js?v=1.52"></script>
+<script src="https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
+<script>
+    $("#userPass").click(function () {
+        $(".form-wrapper").addClass('qrcode');
+        $(".form-wrapper").removeClass('pass');
+        $(".login-box-wx").hide();
+    });
+    $(".login-tab-pass").click(function () {
+        $(".form-wrapper").addClass('qrcode');
+        $(".form-wrapper").removeClass('pass');
+        $(".login-box-wx").hide();
+    });
+    $(".login-tab-qrcode").click(function () {
+        $(".form-wrapper").addClass('pass');
+        $(".form-wrapper").removeClass('qrcode');
+        $(".login-box-wx").show();
+        wxLogin();
+    });
+    function wxLogin(){
+        var obj = new WxLogin({
+            self_redirect:false,
+            id:"wxQrcode",
+            appid: "wxc80ad302e6ecc596",
+            scope: "snsapi_login",
+            redirect_uri: "https://ctf.bugku.com/login/wxBack.html",
+            state: "26f6386898c4b9ba79b9d9eefdd72eb6",
+            style: "",
+            href: ""
+        });
+    }
+    $("#form").submit(function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        let form=document.getElementById('form');
+        if(form.checkValidity()){
+
+            let data = $("#form").serialize();
+            Ajax("/login/check.html", 'post', data, function (res) {
+                if (res.url != "") {
+                    swal(res.msg, '', "success");
+                    location.href = res.url;
+                } else {
+                    swal(res.msg, '', "success");
+                }
+            },function (res) {
+                $("#vcode").click()
+            });
+
+        }
+        return false;
+    })
+
+</script>
+</html>
+
